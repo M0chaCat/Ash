@@ -126,6 +126,18 @@ logStep("Copying index.html & styles.css...");
 console.timeEnd("Step 5");
 logSuccess("Core files copied");
 
+// Step 5.1: Copy brain.png to root
+console.time("Step 5.1");
+logStep("Copying brain.png...");
+const brainSrc = "./brain.png";
+if (fs.existsSync(brainSrc)) {
+  fs.copyFileSync(brainSrc, path.join(outputDir, "brain.png"));
+  logSuccess("brain.png copied to root");
+} else {
+  logInfo("brain.png not found, skipped");
+}
+console.timeEnd("Step 5.1");
+
 // Step 6: Copy assets
 console.time("Step 6");
 logStep("Copying assets...");
