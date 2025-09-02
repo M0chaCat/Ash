@@ -57,5 +57,6 @@ Ash/
 ├── README.md              # Project documentation.
 ├── src/                   # Source code files (compiled alphabetically).
 ├── styles.css             # Global CSS styling.
+├── .ashproject            # Tells ash that what its running is made for Ash, also can customize your Ash in it!
 └── webpack.config.js      # Webpack config for bundling/compiling.
 ```
