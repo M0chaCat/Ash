@@ -1,3 +1,5 @@
+// javascript-obfuscator:disable
+
 function onEvent(id, event, callback) {
     //console.log(`Setting up ${event} event for ${id}`);
     let target = id === "document" ? document : document.getElementById(id);
@@ -67,7 +69,7 @@ function simulateClick(elementId) {
     element.style.borderRadius = `${rounded}px`;
 
     // Apply custom class(es) if provided
-    if (customClass) {
+    if (customClass && applyCustomClasses) {
         const classes = customClass.split(' ');
         element.classList.add(...classes);
     }
@@ -83,10 +85,6 @@ function simulateClick(elementId) {
         element.style.pointerEvents = 'none';
     }
 
-    if (autohide) {
-        element.style.display = 'none';
-    }
-
     // Make all elements clickable
     element.style.pointerEvents = 'auto';
 
@@ -100,7 +98,7 @@ function simulateClick(elementId) {
             img.src = icon;  // Set the src to icon if it's not falsy
         }
         // Apply custom class to image if provided
-        if (customClass) {
+        if (customClass && applyCustomClasses) {
             const filteredClasses = customClass.split(' ')
                 .filter(c => c.startsWith('img-'));
             if (filteredClasses.length) {
@@ -136,6 +134,10 @@ function simulateClick(elementId) {
         element.src = icon;
     } else {
         element.style.cursor = 'default';  // Ensure non-button elements have the default cursor
+    }
+
+    if (autohide) {
+        element.style.display = 'none';
     }
 
     const container = document.getElementById('bema-container');
@@ -298,6 +300,12 @@ function setProperty(elementId, property, value) {
     }
 }
 
+function immmum(){
+
+    //Information Management and Monitoring Utility Module
+    //debug stuff here
+}
+
 function getProperty(elementId, property) {
     const element = document.getElementById(elementId);
     if (element) {
@@ -410,6 +418,7 @@ timedLoop(1, function() {
  function getUptimeMS() {
   return (Math.round(uptimeMS));
 }
+// javascript-obfuscator:disable
 // SHA-256 Checker Function
  function checkSha256(message, expectedHash) {
     var computedHash = sha256(message);
@@ -626,3 +635,8 @@ function shuffle(arr) {
     if (isObject(x)) return "object";
     return typeof x;
   }
+  
+
+
+
+// javascript-obfuscator:enable
