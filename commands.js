@@ -69,7 +69,7 @@ function simulateClick(elementId) {
     element.style.borderRadius = `${rounded}px`;
 
     // Apply custom class(es) if provided
-    if (customClass && applyCustomClasses) {
+    if (customClass) {
         const classes = customClass.split(' ');
         element.classList.add(...classes);
     }
