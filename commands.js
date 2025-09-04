@@ -161,7 +161,7 @@ function stopSound(url) {
         if (audioInstances[url]) {
             audioInstances[url].pause();
             audioInstances[url].currentTime = 0;
-            console.log(`Stopped sound for URL: ${url}`);
+            //console.log(`Stopped sound for URL: ${url}`);
         } else {
             console.warn(`No audio instance found for URL: ${url}`);
         }
@@ -171,7 +171,7 @@ function stopSound(url) {
             if (audioInstances[key]) {
                 audioInstances[key].pause();
                 audioInstances[key].currentTime = 0;
-                console.log(`Stopped sound for URL: ${key}`);
+                //console.log(`Stopped sound for URL: ${key}`);
             }
         }
     }
@@ -185,7 +185,7 @@ function playSound(url) {
     audioInstances[url].play().catch(error => {
         console.error(`Error playing sound: ${error}`);
     });
-    console.log(`Playing sound for URL: ${url}`);
+    //console.log(`Playing sound for URL: ${url}`);
 }
 
 
