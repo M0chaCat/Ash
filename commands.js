@@ -153,18 +153,30 @@ function preloadImage(url) {
     const img = new Image();
     img.src = url;
 }
-
 let audioInstances = {}; // Store audio instances by URL
 
 function stopSound(url) {
-    if (audioInstances[url]) {
-        audioInstances[url].pause(); // Pause the existing audio instance
-        audioInstances[url].currentTime = 0; // Reset to the start
-        console.log(`Stopped sound for URL: ${url}`);
+    if (url) {
+        // Stop a specific sound
+        if (audioInstances[url]) {
+            audioInstances[url].pause();
+            audioInstances[url].currentTime = 0;
+            console.log(`Stopped sound for URL: ${url}`);
+        } else {
+            console.warn(`No audio instance found for URL: ${url}`);
+        }
     } else {
-        console.warn(`No audio instance found for URL: ${url}`);
+        // Stop all sounds
+        for (let key in audioInstances) {
+            if (audioInstances[key]) {
+                audioInstances[key].pause();
+                audioInstances[key].currentTime = 0;
+                console.log(`Stopped sound for URL: ${key}`);
+            }
+        }
     }
 }
+
 
 function playSound(url) {
     if (!audioInstances[url]) {
