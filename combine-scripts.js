@@ -9,7 +9,7 @@ async function combineScripts() {
 
 		const [commandsContent, openbundlesContent, srcFiles] = await Promise.all([
 			fs.readFile(path.join(baseDir, 'commands.js'), 'utf8'),
-			fs.readFile(path.join(baseDir, 'openbundles.js'), 'utf8'),
+			// fs.readFile(path.join(baseDir, 'openbundles.js'), 'utf8'),
 			fs.readdir(srcDirPath)
 		]);
 
@@ -21,7 +21,7 @@ async function combineScripts() {
 		const parts = [
 			'document.addEventListener("DOMContentLoaded", function() {',
 			commandsContent,
-			openbundlesContent,
+			//openbundlesContent,
 		];
 
 		for (let i = 0; i < jsFiles.length; i++) {
