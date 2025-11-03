@@ -1,12 +1,12 @@
 # Ash
 
-Welcome to **Ash**, my code framework doohicky, powered by Node.js and browser js.
+Welcome to Ash, my code framework doohicky, powered by Node.js and browser js.
 
 ## Getting Started
 
-To get up and running:
+To start:
 
-1. Clone the repo and `cd` into the project directory.
+1. Clone the repo and `cd` into the project folder.
 2. Install dependencies:
 
 ```bash
@@ -20,7 +20,7 @@ npm i
 
 ## Building
 
-To compile your project after any change, simply run:
+To compile your project after big any change, simply run:
 
 ```bash
 node ./build.js all
@@ -36,6 +36,7 @@ node ./build.js
 ```
 
 This will build only your `/src/` contents, copies faster!
+Usually copying using `all` is not neccessary besides first startup.
 
 
 It will be output to `/index/`
