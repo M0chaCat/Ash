@@ -120,49 +120,40 @@ logStep("Copying index.html & styles.css...");
 
 ["./index.html", "./styles.css"].forEach((file) => {
   const destPath = path.join(outputDir, path.basename(file));
-  if (fs.existsSync(file)) {
-    // If it's index.html, modify width/height and title based on project variables
-    if (file === "./index.html") {
-      let html = fs.readFileSync(file, "utf-8");
-
-      // Define your WxH values
-      const containerWidth = projectDesktop ? 820 : 750;
-      const containerHeight = projectDesktop ? 630 : 1334;
-
-      // Replace BEMA placeholders
-      html = html.replace(/<!--\s*BEMA-WIDTH\s*-->/g, containerWidth);
-      html = html.replace(/<!--\s*BEMA-HEIGHT\s*-->/g, containerHeight);
-
-      // Replace <title> content
-      html = html.replace(
-        /<title>.*?<\/title>/,
-        `<title>${projectName}</title>`,
-      );
-
-      fs.writeFileSync(destPath, html, "utf-8");
-      logSuccess("index.html modified with project name and WxH");
-    } else {
-      fs.copyFileSync(file, destPath);
-      logSuccess(`${file} copied`);
-    }
-  } else {
+  if (!fs.existsSync(file)) {
     logInfo(`${file} not found, skipped`);
+    return;
+  }
+
+  if (file === "./index.html") {
+    let html = fs.readFileSync(file, "utf-8");
+
+    // Remove inline BEMA container styles
+    html = html.replace(/<div id="bema-container"[^>]*style="[^"]*"([^>]*)>/i, '<div id="bema-container"$1>');
+
+    // Replace <title>
+    html = html.replace(/<title[^>]*>[\s\S]*?<\/title>/i, `<title>${projectName}</title>`);
+
+    // Inject window.isDesktop and projectName at the top of the <body>
+    html = html.replace(
+      /<body([^>]*)>/i,
+      `<body$1>
+<script>
+  window.isDesktop = ${projectDesktop ? "true" : "false"};
+  window.projectName = "${projectName}";
+</script>`,
+    );
+
+    fs.writeFileSync(destPath, html, "utf-8");
+    logSuccess("index.html modified with projectName and window.isDesktop");
+  } else {
+    fs.copyFileSync(file, destPath);
+    logSuccess(`${file} copied`);
   }
 });
+
 console.timeEnd("Step 5");
 logSuccess("Core files copied");
-
-// Step 5.1: Copy brain.png to root
-console.time("Step 5.1");
-logStep("Copying brain.png...");
-const brainSrc = "./brain.png";
-if (fs.existsSync(brainSrc)) {
-  fs.copyFileSync(brainSrc, path.join(outputDir, "brain.png"));
-  logSuccess("brain.png copied to root");
-} else {
-  logInfo("brain.png not found, skipped");
-}
-console.timeEnd("Step 5.1");
 
 // Step 6: Copy assets
 console.time("Step 6");
