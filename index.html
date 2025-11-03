@@ -1,107 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Ash Project</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="app"></div>
-    <div id="bema-wrapper" class="bema-fade-in">
-        <div id="bema-container" class="screen"></div> <!-- Container for BEMA elements -->
-    </div>
-    <script src="dist/combined.bundle.js"></script>
-    <script>
-function scaleBema() {
-  const wrapper = document.getElementById('bema-wrapper');
-  const container = document.getElementById('bema-container');
+    <head>
+        <meta charset="UTF-8" />
+        <title>My Ash Project</title>
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            #bema-wrapper {
+                position: fixed;
+                top: 50%;
+                left: 50%;
 
-  const wrapperWidth = wrapper.clientWidth;
-  const wrapperHeight = wrapper.clientHeight;
+                /* wrapper will scale with viewport */
+                width: min(90vw, 90vh * var(--bema-aspect));
+                height: auto;
+                aspect-ratio: var(--bema-aspect);
 
-  const containerWidth = 750;
-  const containerHeight = 1334;
+                transform: translate(-50%, -50%);
+                border: 16px solid #6c7086;
+                border-radius: 10px;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+                background-color: black;
+                overflow: hidden;
+            }
 
-  // Calculate scale to fit container inside wrapper
-  const scaleX = wrapperWidth / containerWidth;
-  const scaleY = wrapperHeight / containerHeight;
+            #bema-container {
+                width: 100%; /* scale container to fit wrapper */
+                height: 100%;
+                transform-origin: top left;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app"></div>
 
-  // Pick the smaller scale so it fits both width and height
-  const scale = Math.min(scaleX, scaleY);
-const fixedScale = Math.floor(scale * 1000) / 1000; // 3 decimals max
-container.style.transform = `scale(${fixedScale})`;
+        <div id="bema-wrapper" class="bema-fade-in">
+            <div id="bema-container" class="screen"></div>
+        </div>
 
-}
+        <script src="dist/combined.bundle.js"></script>
+        <script>
+            window.isDesktop = true;
 
-window.addEventListener('load', scaleBema);
-window.addEventListener('resize', scaleBema);
+            function scaleBema() {
+                const wrapper = document.getElementById("bema-wrapper");
+                const container = document.getElementById("bema-container");
 
+                // Desktop vs phone dimensions
+                const containerWidthPhone = 750;
+                const containerHeightPhone = 1334;
 
+                const containerWidthDesktop = 820;
+                const containerHeightDesktop = 630;
 
+                const isDesktop = window.isDesktop ?? false;
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === "PrintScreen") {
-    e.preventDefault();
-    alert("Screenshots disabled!");
-  }
-});
+                const containerWidth = isDesktop ? containerWidthDesktop : containerWidthPhone;
+                const containerHeight = isDesktop ? containerHeightDesktop : containerHeightPhone;
 
-    </script>
-    <!-- Add this modal at end of body -->
-<div id="browser-warning" style="display: none;">
-    <div class="warning-modal">
-      <h2>Browser Compatibility Notice</h2>
-      <p id="firefox-warning" style="display: none;">
-        ⚠️ Firefox users: Some display bugs may occur that we cannot resolve.
-      </p>
-      <p id="safari-warning" style="display: none;">
-        ⚠️ Safari is unsupported. 
-      </p>
-      <p>For best experience, please use Chrome/Chromium.</p>
-      <button onclick="document.getElementById('browser-warning').style.display = 'none'">
-        Continue Anyway
-      </button>
-    </div>
-  </div>
-  
-  <!-- Add this CSS -->
-  <style>
-  .warning-modal {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #313244;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    z-index: 9999;
-  }
-  </style>
-  
-  <!-- Add this script -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // Check if warning was previously dismissed
-      if(localStorage.getItem('browserWarningDismissed')) return;
-    
-      const isFirefox = navigator.userAgent.includes('Firefox');
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    
-      if (isFirefox || isSafari) {
-        const modal = document.getElementById('browser-warning');
-        modal.style.display = 'block';
-        if (isFirefox) document.getElementById('firefox-warning').style.display = 'block';
-        if (isSafari) document.getElementById('safari-warning').style.display = 'block';
-      }
-    });
-    
-    // Update dismiss button to set storage
-    const dismissButton = document.querySelector('#browser-warning button');
-    dismissButton.onclick = () => {
-      localStorage.setItem('browserWarningDismissed', 'true');
-      document.getElementById('browser-warning').style.display = 'none';
-    };
-    </script>
-</body>
+                // Set aspect ratio CSS variable for wrapper
+                wrapper.style.setProperty("--bema-aspect", containerWidth / containerHeight);
+
+                // Wrapper's computed width/height
+                const wrapperWidth = wrapper.clientWidth;
+                const wrapperHeight = wrapper.clientHeight;
+
+                // Calculate scale to fit container inside wrapper
+                const scaleX = wrapperWidth / containerWidth;
+                const scaleY = wrapperHeight / containerHeight;
+                const scale = Math.min(scaleX, scaleY);
+
+                const fixedScale = Math.floor(scale * 1000) / 1000;
+                container.style.width = `${containerWidth}px`;
+                container.style.height = `${containerHeight}px`;
+                container.style.transform = `scale(${fixedScale})`;
+            }
+
+            window.addEventListener("load", scaleBema);
+            window.addEventListener("resize", scaleBema);
+        </script>
+    </body>
 </html>

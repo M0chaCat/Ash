@@ -51,40 +51,7 @@ button {
 
 textarea {
     resize: none;
-    
 }
-
-#bema-wrapper {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    
-    /* The width is the smaller of:
-       - 90% viewport width (90vw)
-       - viewport height scaled by aspect ratio (90vh * 750/1334) */
-    width: min(90vw, calc(90vh * (750 / 1334)));
-    
-    height: auto;
-    aspect-ratio: 750 / 1334;
-    
-    transform: translate(-50%, -50%);
-    border: 16px solid #6c7086;
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    background-color: black;
-    overflow: hidden;
-  }
-  
-  
-  
-  /* Fixed size container */
-  #bema-container {
-    width: 1000px;
-    height: 1500px;
-    background: black;
-    overflow: hidden;
-    transform-origin: top left;
-  }
 
 .bema-element {
     position: absolute;
@@ -93,14 +60,10 @@ textarea {
 }
 img {
     pointer-events: none;
-} 
+}
 textarea {
     pointer-events: none;
-} 
-
-
-
-
+}
 
 .bema-element.listening {
     pointer-events: auto; /* Enable pointer events when listening */
@@ -128,8 +91,8 @@ textarea {
         opacity: 1;
     }
 }
-  
-  .bema-fade-in {
+
+.bema-fade-in {
     opacity: 0;
     animation: fadeInAnim 0.3s forwards ease-in-out;
     animation-delay: 0.6s; /* wait 0.2 second before starting */

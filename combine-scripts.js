@@ -1,41 +1,43 @@
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("fs").promises;
+const path = require("path");
 
 async function combineScripts() {
-	try {
-		const baseDir = __dirname;
-		const srcDirPath = path.join(baseDir, 'src');
-		const combinedPath = path.join(baseDir, 'combined.js');
+  try {
+    const baseDir = __dirname;
+    const srcDir = path.join(baseDir, "src");
+    const libDir = path.join(baseDir, "lib");
+    const combinedPath = path.join(baseDir, "combined.js");
 
-		const [commandsContent, openbundlesContent, srcFiles] = await Promise.all([
-			fs.readFile(path.join(baseDir, 'commands.js'), 'utf8'),
-			// fs.readFile(path.join(baseDir, 'openbundles.js'), 'utf8'),
-			fs.readdir(srcDirPath)
-		]);
+    // Read JS files in src and lib
+    const srcFiles = (await fs.readdir(srcDir))
+      .filter((f) => f.endsWith(".js"))
+      .sort();
+    const libFiles = (await fs.readdir(libDir))
+      .filter((f) => f.endsWith(".js"))
+      .sort();
 
-		const jsFiles = srcFiles.filter(f => f.endsWith('.js')).sort();
-		const srcContents = await Promise.all(
-			jsFiles.map(f => fs.readFile(path.join(srcDirPath, f), 'utf8'))
-		);
+    // Read file contents
+    const srcContents = await Promise.all(
+      srcFiles.map((f) => fs.readFile(path.join(srcDir, f), "utf8")),
+    );
+    const libContents = await Promise.all(
+      libFiles.map((f) => fs.readFile(path.join(libDir, f), "utf8")),
+    );
 
-		const parts = [
-			'document.addEventListener("DOMContentLoaded", function() {',
-			commandsContent,
-			//openbundlesContent,
-		];
+    // Combine everything
+    const combinedContent = [
+      'document.addEventListener("DOMContentLoaded", function() {',
+      ...libContents,
+      ...srcContents,
+      "});",
+    ].join("\n\n");
 
-		for (let i = 0; i < jsFiles.length; i++) {
-			parts.push(srcContents[i]);
-		}
-
-		parts.push('});');
-		const combinedContent = parts.join('\n');
-
-		await fs.writeFile(combinedPath, combinedContent, 'utf8');
-		console.log('Scripts combined successfully.');
-	} catch (error) {
-		console.error('Error combining scripts:', error);
-	}
+    // Write combined.js
+    await fs.writeFile(combinedPath, combinedContent, "utf8");
+    console.log("Scripts combined successfully.");
+  } catch (error) {
+    console.error("Error combining scripts:", error);
+  }
 }
 
 combineScripts();

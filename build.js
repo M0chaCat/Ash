@@ -16,6 +16,7 @@ try {
   const data = fs.readFileSync(ashProjectPath, "utf-8");
   const json = JSON.parse(data);
   projectName = json.name || "UnnamedProject";
+  projectDesktop = json.desktop || false;
 } catch (e) {
   console.error("\x1b[31mError reading .ashproject. Exiting.\x1b[0m");
   process.exit(1);
@@ -26,8 +27,8 @@ console.log(`\x1b[36mBuilding project: ${projectName}\x1b[0m`);
 // --- rest of your build script ---
 
 // --- Build.js continues ---
-const webpackDist = "./dist";   // where webpack writes
-const outputDir = "./index";    // final build folder
+const webpackDist = "./dist"; // where webpack writes
+const outputDir = "./index"; // final build folder
 const mode = process.argv[2] || "dist"; // "dist" or "all"
 
 // --- Pretty Logging ---
@@ -57,7 +58,7 @@ function copyRecursive(src, dest) {
 }
 
 // --- Build Process ---
-section("HELIOS BUILD SCRIPT");
+section(projectName + " BUILD SCRIPT");
 console.log(`Mode: ${mode === "all" ? "FULL BUILD" : "DIST ONLY"}`);
 console.time("Total Build");
 
@@ -113,12 +114,37 @@ copyRecursive(webpackDist, path.join(outputDir, "dist"));
 console.timeEnd("Step 4");
 logSuccess("Dist copied");
 
-// Step 5: Copy HTML + CSS
+// Step 5: Copy index.html & styles.css
 console.time("Step 5");
 logStep("Copying index.html & styles.css...");
-["./index.html", "./styles.css"].forEach(file => {
+
+["./index.html", "./styles.css"].forEach((file) => {
+  const destPath = path.join(outputDir, path.basename(file));
   if (fs.existsSync(file)) {
-    fs.copyFileSync(file, path.join(outputDir, path.basename(file)));
+    // If it's index.html, modify width/height and title based on project variables
+    if (file === "./index.html") {
+      let html = fs.readFileSync(file, "utf-8");
+
+      // Define your WxH values
+      const containerWidth = projectDesktop ? 820 : 750;
+      const containerHeight = projectDesktop ? 630 : 1334;
+
+      // Replace BEMA placeholders
+      html = html.replace(/<!--\s*BEMA-WIDTH\s*-->/g, containerWidth);
+      html = html.replace(/<!--\s*BEMA-HEIGHT\s*-->/g, containerHeight);
+
+      // Replace <title> content
+      html = html.replace(
+        /<title>.*?<\/title>/,
+        `<title>${projectName}</title>`,
+      );
+
+      fs.writeFileSync(destPath, html, "utf-8");
+      logSuccess("index.html modified with project name and WxH");
+    } else {
+      fs.copyFileSync(file, destPath);
+      logSuccess(`${file} copied`);
+    }
   } else {
     logInfo(`${file} not found, skipped`);
   }

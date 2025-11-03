@@ -1,2 +1,10 @@
+# macOS
 .DS_Store
-*/.DS_Store
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+index/
+combined.js
