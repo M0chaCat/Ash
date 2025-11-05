@@ -77,4 +77,34 @@
             window.addEventListener("resize", scaleBema);
         </script>
     </body>
+    <!-- Proxy detection + automatic script/style injection -->
+    <script>
+        (async function() {
+            const isProxy = window.is_nyanet_proxy;
+            const proxyBase = window.nyanet_proxy_url || '';
+            const originBase = window.nyanet_origin || '';
+            
+            function proxify(path) {
+                if (!isProxy) return path;
+                return proxyBase + originBase + path;
+            }
+            
+            // Inject CSS
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = proxify('styles.css');
+            document.head.appendChild(link);
+            
+        })();
+    </script>
+    
+    
+    <script>
+        (function() {
+            const url = window.is_nyanet_proxy
+            ? (window.nyanet_proxy_url || '') + (window.nyanet_origin || '') + 'dist/combined.bundle.js'
+            : 'dist/combined.bundle.js';
+            document.write('<script src="' + url.replace(/"/g, '&quot;') + '"><\/script>');
+        })();
+    </script>
 </html>
