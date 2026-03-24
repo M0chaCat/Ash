@@ -8,3 +8,19 @@ node_modules/
 dist/
 index/
 combined.js
+
+# Project-specific stuff!
+.ashproject
+
+plugins/*
+!plugins/add-log.js
+
+src/*
+!src/example.js
+
+lib/*
+!lib/aea.js
+!lib/aes256.js
+!lib/bema.js
+!lib/commands.js
+!lib/openbundles.js

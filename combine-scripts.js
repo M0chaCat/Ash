@@ -1,3 +1,5 @@
+/* DO NOT MODIFY, USE BUILD PLUGINS!!!!! */
+
 const fs = require("fs").promises;
 const path = require("path");
 

@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- DO NOT MODIFY, USE BUILD PLUGINS!!!!! -->
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -37,7 +38,6 @@
             <div id="bema-container" class="screen"></div>
         </div>
 
-        <script src="dist/combined.bundle.js"></script>
         <script>
             function scaleBema() {
                 const wrapper = document.getElementById("bema-wrapper");
@@ -83,22 +83,22 @@
             const isProxy = window.is_nyanet_proxy;
             const proxyBase = window.nyanet_proxy_url || '';
             const originBase = window.nyanet_origin || '';
-            
+
             function proxify(path) {
                 if (!isProxy) return path;
                 return proxyBase + originBase + path;
             }
-            
+
             // Inject CSS
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = proxify('styles.css');
             document.head.appendChild(link);
-            
+
         })();
     </script>
-    
-    
+
+
     <script>
         (function() {
             const url = window.is_nyanet_proxy

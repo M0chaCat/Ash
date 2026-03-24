@@ -1,3 +1,5 @@
+/* DO NOT MODIFY, USE BUILD PLUGINS!!!!! */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #11111b;
@@ -78,28 +80,4 @@ textarea {
 
 * {
     -webkit-text-size-adjust: none;
-}
-
-.fade-in {
-    opacity: 0;
-    animation: fadeInAnim 0.3s forwards ease-in-out;
-    animation-delay: 0.2s; /* wait 0.2 second before starting */
-}
-
-@keyframes fadeInAnim {
-    to {
-        opacity: 1;
-    }
-}
-
-.bema-fade-in {
-    opacity: 0;
-    animation: fadeInAnim 0.3s forwards ease-in-out;
-    animation-delay: 0.6s; /* wait 0.2 second before starting */
-}
-
-@keyframes fadeInAnim {
-    to {
-        opacity: 1;
-    }
 }
