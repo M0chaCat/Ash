@@ -16,14 +16,14 @@ npm i
 ## Project Structure
 
 * All source files live in `/src/`.
-* Files are compiled alphabetically.
+* Files are compiled after libraries, all alphabetically.
 
 ## Building
 
 To compile your project after big any change, simply run:
 
 ```bash
-node ./build.js all
+node build all
 ```
 
 This will build your `/src/` contents and assets.
@@ -32,31 +32,33 @@ This will build your `/src/` contents and assets.
 To compile your project after any code change, simply run:
 
 ```bash
-node ./build.js
+node build
 ```
 
 This will build only your `/src/` contents, copies faster!
 Usually copying using `all` is not neccessary besides first startup.
 
 
-It will be output to `/index/`
+It will be output to `/index/` which you can distribute and run from.
 
 ---
 
 ## Project Structure
 ```txt
 Ash/
-├── .ashproject            # Lets you customize your Ash in it, very important.
-├── assets/                # Static files (images, gifs, etc.)
+├── .ashproject            # Lets you customize your Ash project in it, very important.
+├── assets/                # Any static files you need your your project.
 ├── src/                   # Source code files (compiled alphabetically).
-├── lib/                   # Libraries such as commands.js, OpenBundles, BetterBundles, etc.
-│   └── commands.js        # Commands used by your code, like BEMA and onEvent.
+├── lib/                   # Libraries such as commands.js, aes256, AEA, etc.
+│   └── commands.js        # Required library, provides commands like onEvent.
+├── plugins/               # Build-level plugins.
+│   └── add-log.js         # Sample plugin.
 ├── combine-scripts.js     # Merges scripts for final build, don't run on its own.
-├── index.html             # Main HTML entry point
-├── build.js               # Compilation script
-├── package.json           # Project metadata & dependencies
-├── package-lock.json      # Dependency lockfile (exact versions)
-├── README.md              # Project documentation
-├── styles.css             # Global CSS styling
-└── webpack.config.js      # Webpack config for bundling/compiling
+├── index.html             # Main HTML entry point.
+├── build.js               # Compilation script.
+├── package.json           # Project metadata & dependencies.
+├── package-lock.json      # Dependency lockfile (exact versions).
+├── README.md              # Project documentation.
+├── styles.css             # Global CSS styling, do NOT modify, use a build plugin.
+└── webpack.config.js      # Webpack config for bundling/compiling.
 ```
