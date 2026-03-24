@@ -18,6 +18,11 @@ plugins/*
 src/*
 !src/example.js
 
+assets/*
+!assets/ash.svg
+!assets/black-ash.svg
+!assets/white-ash.svg
+
 lib/*
 !lib/aea.js
 !lib/aes256.js
