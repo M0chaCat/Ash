@@ -23,6 +23,7 @@ button {
     margin: 0px;
     border-radius: 6px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 textarea {
@@ -33,6 +34,8 @@ textarea {
     position: absolute;
     margin: 0px;
     box-sizing: border-box;
+    pointer-events: none;
+    resize: none;
 }
 
 input {
@@ -45,24 +48,15 @@ input {
     cursor: text;
 }
 
-button {
-    cursor: pointer;
-}
-
-textarea {
-    resize: none;
-}
-
 .bema-element {
     position: absolute;
     box-sizing: border-box;
     pointer-events: none;
 }
+
 img {
     pointer-events: none;
-}
-textarea {
-    pointer-events: none;
+    border: none;
 }
 
 .bema-element.listening {

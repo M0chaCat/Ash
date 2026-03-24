@@ -13,10 +13,23 @@ To start:
 npm i
 ```
 
+## .ashproject
+
+```json
+{
+    "name": "MyCoolAshProject",
+    "platform": "phone"
+}
+```
+* Handles configuration of project.
+* Name handles,,, the name,,, To read from it use window.projectName.
+* Platform can be "phone", "desktop", or "corg". It changes the screen aspect ratio. To read from it use window.currentPlatform.
+
 ## Project Structure
 
 * All source files live in `/src/`.
 * Files are compiled after libraries, all alphabetically.
+
 
 ## Building
 

@@ -26,12 +26,24 @@ if (!fs.existsSync(ashProjectPath)) {
   }
 }
 
-let projectName, projectDesktop;
+let projectName, projectPlatform;
 try {
   const data = fs.readFileSync(ashProjectPath, "utf-8");
   const json = JSON.parse(data);
-  projectName = json.name || "UnnamedProject";
-  projectDesktop = json.desktop || false;
+
+  projectName = json.name || "MyCoolAshProject";
+
+  // Map old isDesktop boolean to platform string
+  if (typeof json.desktop === "boolean") {
+    projectPlatform = json.desktop ? "desktop" : "phone";
+    json.platform = projectPlatform; // set new platform
+    delete json.desktop;             // remove old key
+
+    // Save updated JSON back to file
+    fs.writeFileSync(ashProjectPath, JSON.stringify(json, null, 2), "utf-8");
+  } else {
+    projectPlatform = json.platform || "phone";
+  }
 } catch (e) {
   console.error("\x1b[31mError reading .ashproject. Exiting.\x1b[0m");
   process.exit(1);
@@ -208,12 +220,12 @@ runPluginsWithLog("beforeCoreFiles", { projectName, outputDir, webpackDist });
       /<body([^>]*)>/i,
       `<body$1>
 <script>
-  window.isDesktop = ${projectDesktop ? "true" : "false"};
+  window.currentPlatform = "${projectPlatform}";
   window.projectName = "${projectName}";
 </script>`,
     );
     fs.writeFileSync(destPath, html, "utf-8");
-    logSuccess("index.html modified with projectName and window.isDesktop");
+    logSuccess("index.html modified with project name and platform");
   } else {
     fs.copyFileSync(file, destPath);
     logSuccess(`${file} copied`);

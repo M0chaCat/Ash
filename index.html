@@ -28,6 +28,7 @@
                 width: 100%; /* scale container to fit wrapper */
                 height: 100%;
                 transform-origin: top left;
+                border: none;
             }
         </style>
     </head>
@@ -43,17 +44,17 @@
                 const wrapper = document.getElementById("bema-wrapper");
                 const container = document.getElementById("bema-container");
 
-                // Desktop vs phone dimensions
-                const containerWidthPhone = 750;
-                const containerHeightPhone = 1334;
+                // Dimensions for each platform
+                const dimensions = {
+                    corg: { width: 319, height: 449 }, // -1 to remove wierd border,,,
+                    phone: { width: 750, height: 1334 },
+                    desktop: { width: 820, height: 630 },
+                };
 
-                const containerWidthDesktop = 820;
-                const containerHeightDesktop = 630;
+                // Set the current platform: "corg", "desktop", or "phone" (any case)
+                const currentPlatform = (window.currentPlatform ?? "phone").toLowerCase();
 
-                const isDesktop = window.isDesktop ?? false;
-
-                const containerWidth = isDesktop ? containerWidthDesktop : containerWidthPhone;
-                const containerHeight = isDesktop ? containerHeightDesktop : containerHeightPhone;
+                const { width: containerWidth, height: containerHeight } = dimensions[currentPlatform];
 
                 // Set aspect ratio CSS variable for wrapper
                 wrapper.style.setProperty("--bema-aspect", containerWidth / containerHeight);
